@@ -4,7 +4,7 @@ To convert most of the(not 100%) sql queries to Spark DataFrames to reduce copy 
 
 
 ##Flow
-![Cat]()
+![Cat](https://github.com/mvamsichaitanya/sql-to-dataframe-generator/blob/master/src/main/resources/images/sql-to-dataframe-generator.jpg)
 
 
 ##How to use:
