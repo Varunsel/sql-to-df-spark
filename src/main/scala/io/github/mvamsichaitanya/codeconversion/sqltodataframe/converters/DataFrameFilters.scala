@@ -4,8 +4,17 @@ import io.github.mvamsichaitanya.codeconversion.sqltodataframe.SqlToDfConversion
 import io.github.mvamsichaitanya.codeconversion.sqltodataframe._
 import io.github.mvamsichaitanya.codeconversion.sqltodataframe.utils.CommonUtils._
 
+/**
+  * DataFrame Filter Converters
+  */
+
 object DataFrameFilters {
 
+  /**
+    *
+    * @param condition Condition of between filter
+    * @return Converted data frame specific filter
+    */
   def processBetweenFilter(condition: String): String = {
 
     val array = if (condition.contains(" BETWEEN "))
@@ -37,6 +46,11 @@ object DataFrameFilters {
     """$"""" + s"""${preBetween.trim}".between($firstElement,$secondElement)"""
   }
 
+  /**
+    *
+    * @param condition : In filter conditon
+    * @return converts to isin filter of data frame
+    */
   def processInFilter(condition: String): String = {
 
     val array =
@@ -54,6 +68,11 @@ object DataFrameFilters {
     }
   }
 
+
+  /**
+    * @param condition : condition containing comparision filter
+    * @return data frame specific comparision filter
+    **/
   def processComparisionFilters(condition: String): String = {
 
     def extractOperator(): String = {
@@ -88,8 +107,12 @@ object DataFrameFilters {
     s"""$preOperator $replaceOp $postOperator"""
   }
 
-  def processIsNotNullFilter(condition:String):String={
-    val cond = condition.trim.toUpperCase.replace(" IS NOT NULL","")
+  /**
+    * @param condition : condition containing isNotNull filter
+    * @return data frame specific isNotNull filter
+    **/
+  def processIsNotNullFilter(condition: String): String = {
+    val cond = condition.trim.toUpperCase.replace(" IS NOT NULL", "")
 
     val convertedVar =
       if (isFunction(cond))
@@ -99,7 +122,7 @@ object DataFrameFilters {
       else
         """$"""" + cond.trim +"""""""
 
-     s"""$convertedVar.isNotNull"""
+    s"""$convertedVar.isNotNull"""
 
   }
 }

@@ -17,10 +17,11 @@ import java.io.StringReader
 object ParsingUtils {
 
   /**
+    * Throws exception if sql is not a valid one
     *
-    * @param sql
+    * @param sql : Sql string
     */
-    def validateSql(sql: String): Unit = {
+  def validateSql(sql: String): Unit = {
     Try {
       CCJSqlParserUtil.parse(sql)
     } match {
@@ -28,7 +29,7 @@ object ParsingUtils {
       case Failure(ex) => throw new Exception(s"Exception while parsing following sql \n $sql " +
         s" \n Cause of exception is \n ${ex.getCause}")
     }
-    }
+  }
 
   /**
     * Returns List of join conditions
@@ -249,17 +250,17 @@ object ParsingUtils {
 
   /**
     *
-    * @param s
-    * @return
+    * @param whereCondition where condition
+    * @return  List of filters in where condition
     */
-  def getFilters(s: String): List[String] = {
+  def getFilters(whereCondition: String): List[String] = {
     var result = List[String]()
 
     def go(i: Int): Unit = {
       val stack = scala.collection.mutable.Stack[Char]()
       var flag = 0
       var index = i
-      val argument = for (c <- s.substring(i); if flag == 0) yield {
+      val argument = for (c <- whereCondition.substring(i); if flag == 0) yield {
         index += 1
         if ((c == ';' || c == ')') && stack.isEmpty) {
           flag = 1
@@ -277,16 +278,16 @@ object ParsingUtils {
           c
       }
       result = argument.mkString.trim :: result
-      if (index != s.length)
+      if (index != whereCondition.length)
         go(index)
     }
 
     go(0)
-    val filters=result.toArray.reverse
+    val filters = result.toArray.reverse
     val l = filters.length
 
     def iterate(index: Int,
-           result: List[String]): List[String] = {
+                result: List[String]): List[String] = {
       if (index < l) {
         if (filters(index).toUpperCase.contains(" BETWEEN "))
           iterate(index + 2,
@@ -304,8 +305,8 @@ object ParsingUtils {
 
   /**
     *
-    * @param sqlStmt
-    * @return
+    * @param sqlStmt : SQL
+    * @return table name of the insert into stmt
     */
   def getInsertIntoTable(sqlStmt: String): String = {
 
@@ -322,8 +323,8 @@ object ParsingUtils {
 
   /**
     *
-    * @param sqlStmt
-    * @return
+    * @param sqlStmt SQL
+    * @return Select statement inside insert into stmt
     */
   def getInsertIntoStmt(sqlStmt: String): String = {
 
@@ -335,6 +336,11 @@ object ParsingUtils {
     insertInToStmt.getSelect.toString
   }
 
+  /**
+    *
+    * @param sql SQL
+    * @return removes string interpolation
+    */
   def extractVariables(sql: String): String = {
     var stmt = sql
     sql.split('{').tail.foreach(x => {

@@ -6,6 +6,10 @@ import io.github.mvamsichaitanya.codeconversion.sqltodataframe.utils.CommonUtils
 import io.github.mvamsichaitanya.codeconversion.sqltodataframe.utils.ParsingUtils.getFilters
 import io.github.mvamsichaitanya.codeconversion.sqltodataframe.{convertToFilter, convertToFunction, isFunction}
 
+/**
+  * DataFrame Function Converters
+  */
+
 object DataFrameFunctions {
 
   /**
@@ -86,6 +90,11 @@ object DataFrameFunctions {
     result + closingBraces
   }
 
+  /**
+    *
+    * @param col : Column
+    * @return converts to data frame specific count or countDistinct function
+    */
   def processCount(col: String): String = {
     val arr =
       if (col.contains("COUNT"))
@@ -110,9 +119,9 @@ object DataFrameFunctions {
 
   /**
     *
-    * @param funcStr : Lower case of func
-    * @param col
-    * @return
+    * @param funcStr : Lower case of function
+    * @param col : Column
+    * @return converts to data frame specific function
     */
   def processSingleArgumentFunctions(funcStr: String, col: String): String = {
 
@@ -142,6 +151,13 @@ object DataFrameFunctions {
 
   def processSqrt(col: String): String = processSingleArgumentFunctions("sqrt", col)
 
+  /**
+    *
+    * @param funcStr : Lower case of function
+    * @param col : Column
+    * @param separator : Seperator of arguments
+    * @return converts to data frame specific function
+    */
   def processMultiArgumentFunctions(funcStr: String,
                                     col: String,
                                     separator: Char = ','): String = {
@@ -173,6 +189,11 @@ object DataFrameFunctions {
 
   def processInStr(col: String): String = processMultiArgumentFunctions("instr", col)
 
+  /**
+    *
+    * @param column : Column
+    * @return Converts Arithmetic equation to data frame specific
+    */
   def processArithmeticEquation(column: String): String = {
 
     if (isNumeric(column))
@@ -187,7 +208,7 @@ object DataFrameFunctions {
       else
         column
 
-    val operator = getOutmostOperator(col)
+    val operator = getOutermostOperator(col)
     val arguments = getArguments(col, operator).map(processArgument)
 
     if (arguments.length == 2 && isDateColumn(arguments(0)) && Array('+', '-').contains(operator)) {
@@ -210,6 +231,11 @@ object DataFrameFunctions {
 
   }
 
+  /**
+    *
+    * @param col volumn
+    * @return converts to data frame specific function
+    */
   def processCast(col: String): String = {
     val arr =
       if (col.contains("CAST"))

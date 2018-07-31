@@ -14,9 +14,9 @@ object CommonUtils {
 
   /**
     *
-    * @param args
-    * @param delimiter
-    * @return
+    * @param args : Arguments
+    * @param delimiter : delimiter separating arguments
+    * @return Split arguments
     */
   def getArguments(args: String,
                    delimiter: Char): Array[String] = {
@@ -57,8 +57,8 @@ object CommonUtils {
 
   /**
     *
-    * @param stmt
-    * @return
+    * @param stmt :Statement
+    * @return Removes braces if present
     */
   def getBetweenBraces(stmt: String): (String, Int) = {
 
@@ -91,11 +91,6 @@ object CommonUtils {
     (result.mkString.trim, index)
   }
 
-  /**
-    *
-    * @param s
-    * @return
-    */
   def isDate(s:String):Boolean={
 
     val dateFormats = Array[SimpleDateFormat](
@@ -126,7 +121,7 @@ object CommonUtils {
   /**
     *
     */
-  val convert:String => String = (col:String) => {
+  val convertArgument:String => String = (col:String) => {
     if (isVariable(col))
       convertToVariable(col)
     else if (isFunction(col))
@@ -138,10 +133,10 @@ object CommonUtils {
 
   /**
     *
-    * @param col
-    * @return
+    * @param col Arithmetic equation
+    * @return outer most arithmetic operator
     */
-  def getOutmostOperator(col: String):Char={
+  def getOutermostOperator(col: String):Char={
 
 
     arithmeticOperators.foreach(operator => {
@@ -154,8 +149,8 @@ object CommonUtils {
   }
   /**
     *
-    * @param col
-    * @return
+    * @param col column
+    * @return true if it is a date column
     */
   def isDateColumn(col: String): Boolean = {
     DateIdentifiers.foreach(identifier => {
