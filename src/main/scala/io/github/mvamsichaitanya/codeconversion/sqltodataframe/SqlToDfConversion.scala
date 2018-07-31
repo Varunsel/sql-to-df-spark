@@ -82,7 +82,7 @@ object SqlToDfConversion extends CodeConversion {
         case CreateStmt if isSqlCompleted(line) =>
 
           codeSnippet = codeSnippet + line + "\n"
-          val dataFrame = new DataFrame(
+          new DataFrame(
             getSql(codeSnippet),
             tableName,
             CreateStmt)
@@ -100,8 +100,8 @@ object SqlToDfConversion extends CodeConversion {
             varDataSets = tableName :: varDataSets
             fw.write(s"var $tableName:DataFrame = _ \n")
           }
-          val dataFrame =
-            new DataFrame(selectStmt, tableName, InsertIntoStmt)
+
+          new DataFrame(selectStmt, tableName, InsertIntoStmt)
           codeSnippet = EmptyString
           tableName = EmptyString
           sqlStmtType = AnonymousStmt
@@ -185,7 +185,6 @@ object SqlToDfConversion extends CodeConversion {
       CreateStmt)
 
     println(dataFrame)
-
 
 
   }

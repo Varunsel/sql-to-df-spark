@@ -1,7 +1,5 @@
 package io.github.mvamsichaitanya.codeconversion
 
-import scala.io.Source
-
 object Config {
 
   /**
