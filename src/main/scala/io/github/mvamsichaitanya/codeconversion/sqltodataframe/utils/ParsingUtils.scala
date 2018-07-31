@@ -251,7 +251,7 @@ object ParsingUtils {
   /**
     *
     * @param whereCondition where condition
-    * @return  List of filters in where condition
+    * @return List of filters in where condition
     */
   def getFilters(whereCondition: String): List[String] = {
     var result = List[String]()
