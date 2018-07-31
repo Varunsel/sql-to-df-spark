@@ -22,8 +22,11 @@ todo:
 1. Executable code with no create table statement of following format
 
 => Create table table_1(column_1 int,
+
                       column_2 bigint,
+                      
                         column_3 string);
+                        
 
 2. No Union all Queries
  
