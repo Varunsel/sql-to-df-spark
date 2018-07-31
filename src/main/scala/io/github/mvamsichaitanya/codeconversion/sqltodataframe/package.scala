@@ -2,6 +2,7 @@ package io.github.mvamsichaitanya.codeconversion
 
 /**
   * Intermediate code for sql to DataFrame conversion
+  * It maps column or filter to their respective converter functions
   */
 
 package object sqltodataframe {
@@ -20,14 +21,6 @@ package object sqltodataframe {
     * [[filters]] : Map of filter identifiers to conversion functions
     */
 
-  val comparisonFilters: ListMap[String, String] =
-    ListMap(">=" -> ">=",
-      "<=" -> "<=",
-      "<" -> "<",
-      ">" -> ">",
-      "!=" -> "=!=",
-      "=" -> "===")
-
   val filterIdentifiers: List[String] = List("between", " in ", "is not null")
 
   val filters: ListMap[String, String => String] = ListMap(
@@ -45,7 +38,7 @@ package object sqltodataframe {
     * [[functions]] : Map of Function identifiers to conversion functions
     */
 
-  val arithmeticOperators=List('*','/','+','-')
+  val arithmeticOperators = List('*', '/', '+', '-')
 
   val aggFunctions: ListMap[String, String => String] = ListMap(
     "count(" -> processCount,
@@ -67,13 +60,23 @@ package object sqltodataframe {
       "instr(" -> processInStr,
       "cast(" -> processCast,
       "sqrt(" -> processSqrt
-           , "+" -> processArithmeticEquation,
-            "-" -> processArithmeticEquation,
-            "*" -> processArithmeticEquation,
-            "/" -> processArithmeticEquation
+      , "+" -> processArithmeticEquation,
+      "-" -> processArithmeticEquation,
+      "*" -> processArithmeticEquation,
+      "/" -> processArithmeticEquation
     ) ++ aggFunctions
 
-  val functionsIdentifiers: List[String] = functions.keys.toList ::: aggFunctionIdentifiers ::: arithmeticOperators.map(_.toString)
+  val comparisonFilters: ListMap[String, String] =
+    ListMap(">=" -> ">=",
+      "<=" -> "<=",
+      "<" -> "<",
+      ">" -> ">",
+      "!=" -> "=!=",
+      "=" -> "===")
+
+  val functionsIdentifiers: List[String] = functions.keys.toList :::
+    aggFunctionIdentifiers :::
+    arithmeticOperators.map(_.toString)
 
   /**
     * [[isFunction]] => Take String as input and returns true if it contains function identifier
@@ -102,36 +105,41 @@ package object sqltodataframe {
     * converts them to DataFrame specific functions
     * [[convertToAggFunction]] => takes string as input which may contain nested sql functions and
     * converts them to DataFrame specific agg functions
-    * [[getOutermostIdentifier]] => returns outermost function identifier of nested function
+    * [[getOutermostFunctionIdentifier]] => returns outermost function identifier of nested function
     */
   def convertToFunction(col: String): String = {
 
-    if(isArithmeticOuterFunction(col))
+    if (isArithmeticOuterFunction(col))
       processArithmeticEquation(col)
     else {
-      val identifier = getOutermostIdentifier(col.toLowerCase)
+      val identifier = getOutermostFunctionIdentifier(col.toLowerCase)
       functions(identifier).apply(col)
     }
   }
 
   /**
     *
-    * @param col
-    * @return
+    * @param col :Column
+    * @return Converted agg function
     */
   def convertToAggFunction(col: String): String = {
 
-    if(isArithmeticOuterFunction(col))
+    if (isArithmeticOuterFunction(col))
       processArithmeticEquation(col)
     else {
-      val identifier = getOutermostIdentifier(col.toLowerCase)
+      val identifier = getOutermostFunctionIdentifier(col.toLowerCase)
       functions(identifier).apply(col)
     }
   }
 
+  /**
+    *
+    * @param column column
+    * @return true if arithmetic function is outer most function
+    */
   def isArithmeticOuterFunction(column: String): Boolean = {
 
-    if(containArithmeticOperators(column)) {
+    if (containArithmeticOperators(column)) {
       val tuple = getBetweenBraces(column.trim)
       val col =
         if (tuple._2 == column.length)
@@ -147,16 +155,21 @@ package object sqltodataframe {
     false
   }
 
-  def getOutermostIdentifier(col: String): String = {
+  /**
+    *
+    * @param col column
+    * @return Outer most function identifier
+    */
+  def getOutermostFunctionIdentifier(col: String): String = {
     var result = EmptyString
     var index = col.length
 
-      functionsIdentifiers.foreach(identifier => {
-        if (col.indexOf(identifier) != -1 && col.indexOf(identifier) < index) {
-          result = identifier
-          index = col.indexOf(identifier)
-        }
-      })
+    functionsIdentifiers.foreach(identifier => {
+      if (col.indexOf(identifier) != -1 && col.indexOf(identifier) < index) {
+        result = identifier
+        index = col.indexOf(identifier)
+      }
+    })
 
     result
   }
@@ -180,7 +193,6 @@ package object sqltodataframe {
     })
     result
   }
-
 
 
 }
