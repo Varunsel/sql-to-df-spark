@@ -38,22 +38,14 @@ package object sqltodataframe {
   )
 
   /**
-    * [[arithmeticOperators]] : List of operators, * is not included because of overlapping with 'select *'
+    * [[arithmeticOperators]] : List of arithmetic operators
     * [[aggFunctionIdentifiers]] : List of strings used to identify agg functions
     * [[aggFunctions]] : Map of agg Function identifiers to conversion functions
     * [[functionsIdentifiers]] : List of strings used to identify functions
     * [[functions]] : Map of Function identifiers to conversion functions
     */
 
-    val arithmeticOperators=List('*','/','+','-')
-//  val arithmeticOperators = List("","")
-
-  //  val aggFunctionIdentifiers: List[String] = List(
-  //    "count(",
-  //    "sum(",
-  //    "max(",
-  //    "min("
-  //  )
+  val arithmeticOperators=List('*','/','+','-')
 
   val aggFunctions: ListMap[String, String => String] = ListMap(
     "count(" -> processCount,
@@ -63,17 +55,6 @@ package object sqltodataframe {
   )
 
   val aggFunctionIdentifiers: List[String] = aggFunctions.keys.toList
-
-  //  val functionsIdentifiers: List[String] = List(
-  //    "coalesce(",
-  //    "trim(",
-  //    "concat(",
-  //    "translate(",
-  //    "substr(",
-  //    "instr(",
-  //    "case when ",
-  //    "cast("
-  //  ) ::: aggFunctionIdentifiers ::: arithmeticOperators
 
   val functions: ListMap[String, String => String] =
     ListMap[String, String => String](
