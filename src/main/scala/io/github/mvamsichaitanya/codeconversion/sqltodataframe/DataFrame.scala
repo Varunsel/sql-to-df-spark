@@ -5,7 +5,6 @@ import io.github.mvamsichaitanya.codeconversion.sqltodataframe.utils.ParsingUtil
 import io.github.mvamsichaitanya.codeconversion.sqltodataframe.utils.CommonUtils._
 import SqlToDfConversion._
 import io.github.mvamsichaitanya.codeconversion.sqltodataframe.constants.StringConstants._
-import io.github.mvamsichaitanya.codeconversion.sqltodataframe._
 
 class DataFrame(sqlStmt: String,
                 dfName: String,
@@ -37,8 +36,8 @@ class DataFrame(sqlStmt: String,
     * sql : Input sql statement
     * dataFrameCode : Resultant DataFrame code
     */
-  var sql: String = _
-  var dataFrameCode: String = _
+  var sql: String = EmptyString
+  var dataFrameCode: String = EmptyString
 
   create()
 
@@ -361,6 +360,11 @@ class DataFrame(sqlStmt: String,
     })
   }
 
+  /**
+    * Convert all conditions to data frame specific
+    *
+    * @param conditions where conditions
+    */
   private def convertFilters(conditions: List[String]): Unit = {
     filters = conditions.
       map(condition =>
@@ -371,6 +375,13 @@ class DataFrame(sqlStmt: String,
       filter(_ != "")
   }
 
+  /**
+    * Splits select statement of sql to select cols and aggregated cols
+    * and initialize groupByCols
+    *
+    * @param sql SQL
+    * @return
+    */
   private def splitSelectColumns(sql: String): (List[String], List[String]) = {
 
     val groupBycolumns = getGroupByColumns(sql)
@@ -386,7 +397,7 @@ class DataFrame(sqlStmt: String,
   }
 
   /*
-  * Split filters by
+  * Split filters into select statement filters and join filters
   */
   private def splitFilters(): Unit = {
 
@@ -425,8 +436,10 @@ class DataFrame(sqlStmt: String,
       val in = """$"""" + s"""$preIn".isin(Array${postIn.trim.replace(''', '"')}:_*)"""
       in
     }
+
   }
 
+  //writes Data frame code to file
   private def write(): Unit = {
     if (sqlStmtType == CreateStmt) {
       fw.write(s"""val $dfName = $dataFrameCode \n \n""")
