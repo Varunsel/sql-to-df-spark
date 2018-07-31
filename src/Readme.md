@@ -34,7 +34,7 @@ Create table table_1(
 
 2. No Union all Queries
  
-3. No not regexp_like
+3. No "not regexp_like"
 
 4. IN SAS Sql if || or :: functions are used then as or alias is must
 
