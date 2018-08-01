@@ -1,5 +1,8 @@
 package io.github.mvamsichaitanya.codeconversion
 
+/**
+  * Configurations
+  */
 object Config {
 
   /**
@@ -54,6 +57,9 @@ object Config {
        |
                           |
                           |""".stripMargin
+
+
+  final val GlobalConstants: List[String] = List("null")
 
 
 }

@@ -10,6 +10,9 @@ import io.github.mvamsichaitanya.codeconversion.sqltodataframe.utils.ParsingUtil
 
 import scala.io.Source
 
+/**
+  * Driver program Which iterates each sql from Input file and Creates DataFrames from it
+  */
 object SqlToDfConversion extends CodeConversion {
 
   /**
@@ -164,7 +167,9 @@ object SqlToDfConversion extends CodeConversion {
 
       "lit(" + dateVars(col) + ")"
     }
-    else if (variables.contains(col.trim.replace("'", "")) || isNumeric(col))
+    else if (variables.contains(col.trim.replace("'", "")) ||
+      isNumeric(col) ||
+      GlobalConstants.contains(col.toLowerCase))
       "lit(" + col + ")"
     else
       "lit(" + col.replace(''', '"') + ")"

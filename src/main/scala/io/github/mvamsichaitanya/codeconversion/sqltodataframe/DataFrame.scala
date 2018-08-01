@@ -6,6 +6,13 @@ import io.github.mvamsichaitanya.codeconversion.sqltodataframe.utils.CommonUtils
 import SqlToDfConversion._
 import io.github.mvamsichaitanya.codeconversion.sqltodataframe.constants.StringConstants._
 
+/**
+  * Custom DataFrame class
+  *
+  * @param sqlStmt SQL
+  * @param dfName table name
+  * @param sqlStmtType Type of sql
+  */
 class DataFrame(sqlStmt: String,
                 dfName: String,
                 sqlStmtType: SqlStmtType = CreateStmt) {
@@ -149,7 +156,7 @@ class DataFrame(sqlStmt: String,
     Adding Select statement
      */
 
-    addSelect()
+    addSelectStatement()
 
     /*
     Adding filters specific to select columns
@@ -170,6 +177,11 @@ class DataFrame(sqlStmt: String,
       write()
   }
 
+  /**
+    *
+    * @param sql Sql
+    * @return removes string interpolation
+    */
   private def extractVariables(sql: String): String = {
     var stmt = sql
     sql.split('{').tail.foreach(x => {
@@ -211,7 +223,7 @@ class DataFrame(sqlStmt: String,
   /**
     * Function to add select statement
     */
-  private def addSelect(): Unit = {
+  private def addSelectStatement(): Unit = {
 
     val selectColumns = selectCols.
       map(col =>
