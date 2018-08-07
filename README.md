@@ -20,9 +20,9 @@ Advantages of DataFrame over sql:-
 
 * Advantage to write UDF and UDAF using FP's of scala.
 
-* Better type safe than sql
+* Better type safe than sql.
 
-* Using functional programming API we can define filters or Select statement at runtime (Example in Propensity)
+* Using functional programming API we can define filters or Select statement at runtime.
 
 * Splitting complex sql to small data frames used for optimizations.
 
