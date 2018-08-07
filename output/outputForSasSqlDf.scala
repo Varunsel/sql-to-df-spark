@@ -11,7 +11,11 @@ val STUDENT_TEMP1 = student.
  select($"student_id".as("id"),concat($"branch",$"college").as("branch_college")).
  distinct 
  
-val STUDENT_TEMP = student. 
+val STUDENT_TEMP_a = student.
+filter($"STUDENT_ID".isNotNull). 
+ select($"*") 
+ 
+val STUDENT_TEMP = STUDENT_TEMP_a.as("a"). 
  select($"student_id".as("id"),concat($"weight",lit("_"),when($"weight".between(lit(0),lit(50)),lit("low")).
     otherwise(when($"weight".between(lit(51),lit(70)),lit("medium")).
     otherwise(when($"weight".between(lit(71),lit(100)),lit("high")).

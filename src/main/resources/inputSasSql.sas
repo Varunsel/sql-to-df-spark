@@ -5,8 +5,7 @@
     FROM
     	STUDENT;
 
-
-        CREATE TABLE STUDENT_TEMP AS
+  CREATE TABLE STUDENT_TEMP AS
         SELECT
          	DISTINCT student_id AS id,
               weight||'_'||(CASE
@@ -16,7 +15,7 @@
            ELSE 'VERY HIGH'
            END) AS NEWWEIGHT
          FROM
-           STUDENT;
+           (SELECT * FROM STUDENT WHERE student_id is not null) a;
 
     CREATE TABLE STUDENT_TEMP2 AS
     SELECT

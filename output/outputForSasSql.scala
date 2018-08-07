@@ -27,7 +27,7 @@ when weight between 51 and 70 then 'medium'
 when weight between 71 and 100 then 'high'
 else 'very high'
 end)) as newweight         from
-           student""")
+           (select * from student where student_id is not null) a""")
 
 
          STUDENT_TEMP.createOrReplaceTempView("STUDENT_TEMP")

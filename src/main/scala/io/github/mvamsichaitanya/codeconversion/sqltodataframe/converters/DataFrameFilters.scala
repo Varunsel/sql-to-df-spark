@@ -41,7 +41,7 @@ object DataFrameFilters {
       else if (isVariable(rest))
         convertToVariable(rest)
       else
-        """$"""" + rest +"""""""
+        """$"""" + rest + """""""
 
     """$"""" + s"""${preBetween.trim}".between($firstElement,$secondElement)"""
   }

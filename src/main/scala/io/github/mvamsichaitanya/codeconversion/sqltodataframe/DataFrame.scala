@@ -9,8 +9,8 @@ import io.github.mvamsichaitanya.codeconversion.sqltodataframe.constants.StringC
 /**
   * Custom DataFrame class
   *
-  * @param sqlStmt SQL
-  * @param dfName table name
+  * @param sqlStmt     SQL
+  * @param dfName      table name
   * @param sqlStmtType Type of sql
   */
 class DataFrame(sqlStmt: String,
@@ -260,7 +260,7 @@ class DataFrame(sqlStmt: String,
   }
 
   /**
-    * converts sql joins to dataframe joins
+    * converts sql joins to data frame joins
     *
     * @param joins : List of joins in sql
     */
