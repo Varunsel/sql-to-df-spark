@@ -1,5 +1,7 @@
 ## Sql to DataFrame Generator 
 
+Supported Sql: SAS and Hive
+
 ### Aim : 
 
 To convert most of the sql queries to Spark DataFrames(scala) and reduce copy paste work of developers while doing the same.
