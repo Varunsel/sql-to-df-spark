@@ -106,7 +106,7 @@ val STUDENT_TEMP = STUDENT_TEMP_a.as("a").
 1. Clone the code from git
 
 
-2. Edit the properties file in Config.scala(configs kept in scala file as user will be Data Engineer)
+2. Edit the properties file in Config.scala(No extra config required to differentiate hive or sas)(configs kept in scala file as user will be Data Engineer)
 
 
 3. Edit SasSqlToSparkSql.scala and SqltoDf.scala to iterate each sql according to your input.
