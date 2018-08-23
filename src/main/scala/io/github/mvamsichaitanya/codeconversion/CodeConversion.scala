@@ -16,7 +16,7 @@ trait CodeConversion {
 
   /**
     * start method
-    * contains code used to convert
+    * contains code that converts
     */
   def start():Unit
 

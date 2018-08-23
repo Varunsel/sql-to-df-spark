@@ -7,6 +7,7 @@ object Config {
 
   /**
     * End of the SQL indicator
+    * In SAS ); will be EndSqlInd
     */
 
   final val EndSqlInd = ";"
